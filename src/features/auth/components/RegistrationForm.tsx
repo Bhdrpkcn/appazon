@@ -1,4 +1,4 @@
-import { FC, FormEvent } from "react";
+import { FC, FormEvent, useEffect } from "react";
 
 import {
   Box,
@@ -8,8 +8,9 @@ import {
   Typography,
   Button,
   Divider,
+  CircularProgress,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import useInput from "../../../hooks/input/useInput";
 import {
@@ -19,7 +20,14 @@ import {
 import { validateEmail } from "../../../shared/utils/validation/email";
 import { NewUser } from "../models/NewUser";
 
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux/hooks";
+import { register, reset } from "../authSlice";
+
 const RegistrationForm: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
   const {
     text: name,
     shouldDisplayError: nameHasError,
@@ -57,6 +65,15 @@ const RegistrationForm: FC = () => {
     passwordClearHandler();
     confirmPasswordClearHandler();
   };
+  const { isLoading, isSuccess } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(reset());
+      clearForm();
+      navigate("/signin");
+    }
+  }, [isSuccess, dispatch]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,10 +102,11 @@ const RegistrationForm: FC = () => {
       password,
     };
 
-    console.log("NEW USER :", newUser);
-
-    clearForm();
+    dispatch(register(newUser));
   };
+
+  if (isLoading)
+    return <CircularProgress sx={{ marginTop: "64px" }} color="primary" />;
   return (
     <Box
       sx={{
