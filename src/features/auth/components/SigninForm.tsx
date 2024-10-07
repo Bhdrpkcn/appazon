@@ -41,6 +41,8 @@ const SigninForm: FC = () => {
     clearHandler: passwordClearHandler,
   } = useInput(validatePasswordLength);
 
+  const isDisabled = !validateEmail(email) || !validatePasswordLength(password);
+
   const clearForm = () => {
     emailClearHandler();
     passwordClearHandler();
@@ -140,11 +142,12 @@ const SigninForm: FC = () => {
             />
 
             <Button
+              disabled={isDisabled}
               variant="contained"
               style={{
                 marginTop: "16px",
                 height: "31px",
-                backgroundColor: "#f0c14b",
+                backgroundColor: isDisabled ? "lightgray " : "#f0c14b",
                 color: "black",
                 borderColor: "#a88734 #9c7e31 #846a29",
                 textTransform: "none",
@@ -163,12 +166,12 @@ const SigninForm: FC = () => {
 
         <div>
           <small>
-            <a href="#" style={{ textDecoration: "none" }}>
+            <a href="/" style={{ textDecoration: "none" }}>
               {" "}
               Conditions of use
             </a>{" "}
             and{" "}
-            <a href="#" style={{ textDecoration: "none" }}>
+            <a href="/" style={{ textDecoration: "none" }}>
               Privacy policy
             </a>
           </small>

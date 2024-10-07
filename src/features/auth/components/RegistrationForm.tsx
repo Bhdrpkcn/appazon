@@ -59,6 +59,12 @@ const RegistrationForm: FC = () => {
     clearHandler: confirmPasswordClearHandler,
   } = useInput(validatePasswordLength);
 
+  const isDisabled =
+    !validateEmail(email) ||
+    !validatePasswordLength(password) ||
+    !validateNameLength(name) ||
+    confirmPasswordHasError;
+
   const clearForm = () => {
     nameClearHandler();
     emailClearHandler();
@@ -212,11 +218,12 @@ const RegistrationForm: FC = () => {
             size="small"
           />
           <Button
+            disabled={isDisabled}
             variant="contained"
             style={{
               marginTop: "16px",
               height: "31px",
-              backgroundColor: "#f0c14b",
+              backgroundColor: isDisabled ? "lightgray" : "#f0c14b",
               color: "black",
               borderColor: "#a88734 #9c7e31 #846a29",
               textTransform: "none",
@@ -235,12 +242,12 @@ const RegistrationForm: FC = () => {
 
       <div>
         <small>
-          <a href="#" style={{ textDecoration: "none" }}>
+          <a href="/" style={{ textDecoration: "none" }}>
             {" "}
             Conditions of use
           </a>{" "}
           and{" "}
-          <a href="#" style={{ textDecoration: "none" }}>
+          <a href="/" style={{ textDecoration: "none" }}>
             Privacy policy
           </a>
         </small>
@@ -263,7 +270,7 @@ const RegistrationForm: FC = () => {
       <div>
         <small>
           Buying for work?
-          <a href="#" style={{ textDecoration: "none" }}>
+          <a href="/" style={{ textDecoration: "none" }}>
             {" "}
             Create a free business account
           </a>
