@@ -1,10 +1,10 @@
-import { logout } from "../features/auth/authSlice";
+import { logout, selectedUser } from "../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/redux/hooks";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
 
-  const { user, isAuthenticaded } = useAppSelector((state) => state.auth);
+  const { user, isAuthenticaded } = useAppSelector(selectedUser);
 
   const logoutHandler = () => {
     dispatch(logout());

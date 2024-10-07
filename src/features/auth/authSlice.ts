@@ -106,13 +106,9 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.jwt = action.payload;
+        state.jwt = action.payload.jwt;
         state.isAuthenticaded = true;
-
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-          state.user = JSON.parse(storedUser) as DisplayUser;
-        }
+        state.user = action.payload.user;
       })
       .addCase(login.rejected, (state) => {
         state.isLoading = false;
