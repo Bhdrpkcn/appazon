@@ -4,8 +4,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux/hooks";
 const HomePage = () => {
   const dispatch = useAppDispatch();
 
-  const { user } = useAppSelector((state) => state.auth);
-  const { jwt } = useAppSelector((state) => state.auth);
+  const { user, isAuthenticaded } = useAppSelector((state) => state.auth);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -32,7 +31,7 @@ const HomePage = () => {
     >
       <h2>HomePage</h2>
 
-      {user ? (
+      {isAuthenticaded && user ? (
         <>
           <h5 style={{ color: "gray" }}>
             you're succesfully signed in your email is:

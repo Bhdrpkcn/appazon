@@ -108,6 +108,11 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.jwt = action.payload;
         state.isAuthenticaded = true;
+
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          state.user = JSON.parse(storedUser) as DisplayUser;
+        }
       })
       .addCase(login.rejected, (state) => {
         state.isLoading = false;
