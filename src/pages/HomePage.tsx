@@ -1,58 +1,38 @@
-import { logout, selectedUser } from "../features/auth/authSlice";
+import { useEffect } from "react";
+
 import { useAppDispatch, useAppSelector } from "../hooks/redux/hooks";
+import { getProducts } from "../features/products/productSlice";
+
+import HeaderComponent from "../features/products/components/HeaderComponent";
+import ProductComponent from "../features/products/components/ProductComponent";
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
 
-  const { user, isAuthenticaded } = useAppSelector(selectedUser);
+  const { products } = useAppSelector((state) => state.product);
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
-
-  const buttonStyle: React.CSSProperties = {
-    backgroundColor: "lightgray",
-    cursor: "pointer",
-    border: "1px solid black",
-    borderRadius: "5px",
-    margin: "5px",
-    padding: "5px",
-    textAlign: "center",
-    width: "100px",
-  };
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <h2>HomePage</h2>
-
-      {isAuthenticaded && user ? (
-        <>
-          <h5 style={{ color: "gray" }}>
-            you're succesfully signed in your email is:
-          </h5>
-          <h3 style={{ color: "red" }}>{user?.email}</h3>
-
-          <a onClick={logoutHandler} style={buttonStyle} href="/signin">
-            Logout
-          </a>
-        </>
-      ) : (
-        <>
-          <h3>to signin or register</h3>
-          <a onClick={logoutHandler} style={buttonStyle} href="/signin">
-            sign in
-          </a>
-          <a onClick={logoutHandler} style={buttonStyle} href="/register">
-            register
-          </a>
-        </>
-      )}
+    <div>
+      <HeaderComponent />
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "48px",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "48px",
+        }}
+      >
+        {products.length > 0 &&
+          products.map((product) => (
+            <ProductComponent key={product._id} product={product} />
+          ))}
+      </div>
     </div>
   );
 };
